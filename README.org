@@ -1,0 +1,94 @@
+** TODO Create an RScript to Galaxy tool             :@galaxy:rscript2galaxy:
+*** Performs the following
+ 1. Takes an RScript and a list of Libraries in order of precedence
+ 2. All functions from specified libraries are pulled and compared against functions in script 
+ 3. All functions in a given scope have their `formals` and `help` text parsed for:
+    - Default values
+    - Type (integer, float, string, select, data input)
+    - Ranges (min, max)
+    - Labels = Main help text
+ 4. Wrappers are generated for each of the tool types
+ 5. Wrappers are sectioned based upon whether they are called in the same user-defined function (if any)
+
+#+BEGIN_SRC R
+params.filter = formals(filter)
+##params.filter$low = 5
+##params.filter$high = 10
+params.norm = formals(norm)
+##params.norm$low = 2.0
+##params.norm$high = 12.0
+params.cluster = formals(cluster)
+##params.cluster$mode = "pca"
+params.pheatmap = formals(pheatmap)
+
+
+generateClusters <- function(obj){
+   obj <- norm(obj, params.norm)          ## Lib clusta
+   obj <- cluster(obj, params.cluster)    ## Lib clusta
+   print(pheatmap(obj, params.pheatmap))  ## Lib pheatmap -- ignored
+   return(obj)
+}
+
+obj <- filter(obj, params.filter)   ## Lib filtnow
+obj <- generateClusters(obj)
+
+saveRDS(obj, file=out.rds)
+#+END_SRC
+
+#+BEGIN_SRC bash
+./rscript2galaxy myscript.Rscript --libs clusta filtnow
+#+END_SRC
+
+#+BEGIN_SRC xml
+<tool id="" name="" version="">
+    <requirements>
+       <requirement type="package">clusta</requirement>
+       <requirement type="package">filtnow</requirement>
+    </requirements>
+    <macros>
+        <macro name="use_defaults_no" >
+            <conditional name="use" >
+                <param name="def" type="select" label="Use Defaults?" >
+                    <option value="yes" >Yes</option>
+                    <option value="no" >No</option>
+                </param>
+                <when value="yes" />
+                <when value="no" >
+                    <yield />
+                </when>
+            </conditional>
+        </macro>
+    </macros>
+    <command detect_errors="exit_code"><![CDATA[
+    ]]></command>
+    <configfiles>
+        <configfile>
+        </configfile>
+    </configfiles>
+    <inputs>
+        <section name="filter" title="filter" expanded="true" >
+            <expand macro="use_defaults_no" >
+                <param name="filter_low" type="integer" min="0" max="50" value="5" label="This is filled by 
+help text" />
+                <param name="filter_high" type="integer" min="0" max="50" value="10" label="This is filled by 
+help text" />
+            </expand>
+        </section>
+        <section name="generateclusters" title="generateClusters" expanded="true" >
+            <expand macro="use_defaults_no">
+                <param name="norm_low" type="float" min="1" max="100" value="2" label="This is filled by help 
+text" />
+                <param name="norm_high" type="float" min="1" max="100" value="12" label="This is filled by help 
+text" />
+                <param name="cluster_mode" type="select" label="This is filled by help text" >
+                    <option value="pca" selected="true">pca</option>
+                    <option value="ica" >ica</option>
+                </param>
+            </expand>
+        </section>
+    </inputs>
+    <output>
+        <data name="out_rds" format="rdata" label="${tool.name} on ${on_string} : RDS" />
+    </outputs>
+#+END_SRC
+
