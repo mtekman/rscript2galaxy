@@ -10,6 +10,8 @@
  4. Wrappers are generated for each of the tool types
  5. Wrappers are sectioned based upon whether they are called in the same user-defined function (if any)
 
+myscript.Rscript:
+
 #+BEGIN_SRC R
 params.filter = formals(filter)
 ##params.filter$low = 5
@@ -35,9 +37,13 @@ obj <- generateClusters(obj)
 saveRDS(obj, file=out.rds)
 #+END_SRC
 
+invoking the conversion:
+
 #+BEGIN_SRC bash
 ./rscript2galaxy myscript.Rscript --libs clusta filtnow
 #+END_SRC
+
+resultant XML
 
 #+BEGIN_SRC xml
 <tool id="" name="" version="">
@@ -92,3 +98,4 @@ text" />
     </outputs>
 #+END_SRC
 
+Note that functions within a user-defined function are grouped together in the same section. (This should be optional).
