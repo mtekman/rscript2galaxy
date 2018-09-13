@@ -74,18 +74,14 @@ resultant XML
     <inputs>
         <section name="filter" title="filter" expanded="true" >
             <expand macro="use_defaults_no" >
-                <param name="filter_low" type="integer" min="0" max="50" value="5" label="This is filled by 
-help text" />
-                <param name="filter_high" type="integer" min="0" max="50" value="10" label="This is filled by 
-help text" />
+                <param name="filter_low" type="integer" min="0" max="50" value="5" label="This is filled by help text" />
+                <param name="filter_high" type="integer" min="0" max="50" value="10" label="This is filled by help text" />
             </expand>
         </section>
         <section name="generateclusters" title="generateClusters" expanded="true" >
             <expand macro="use_defaults_no">
-                <param name="norm_low" type="float" min="1" max="100" value="2" label="This is filled by help 
-text" />
-                <param name="norm_high" type="float" min="1" max="100" value="12" label="This is filled by help 
-text" />
+                <param name="norm_low" type="float" min="1" max="100" value="2" label="This is filled by help text" />
+                <param name="norm_high" type="float" min="1" max="100" value="12" label="This is filled by help text" />
                 <param name="cluster_mode" type="select" label="This is filled by help text" >
                     <option value="pca" selected="true">pca</option>
                     <option value="ica" >ica</option>
