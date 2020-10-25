@@ -1,3 +1,11 @@
+*** This repo has migrated to GitLab
+https://gitlab.com/mtekman/rscript2galaxy
+****** (The copy here is archived. Please see the above link for the latest developments)
+
+#+HTML: <hr/>
+
+
+
 ** TODO Create an RScript to Galaxy tool             :@galaxy:rscript2galaxy:
 *** Performs the following
  1. Takes an RScript and a list of Libraries in order of precedence
